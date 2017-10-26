@@ -182,6 +182,7 @@ abstract class PySparkWrapperTest(entryPoint: PipelineStage,
         case "DropColumns"         => "cols=[\"col1\"]"
         case "Repartition"         => "n=2"
         case "IndexToValue"        => "inputCol=\"catOutput\""
+        case "TextPreprocessor"    => "inputCol=\"col5\", outputCol=\"catOutput1\", normFunc=\"identity\""
         case "ValueIndexerModel"   => "inputCol=\"col5\", outputCol=\"catOutput\", " +
           "dataType=\"string\", levels=[\"dog\", \"cat\", \"bird\"]"
         case "_CNTKModel" | "MultiTokenizer" | "NltTokenizeTransform" | "TextTransform"
