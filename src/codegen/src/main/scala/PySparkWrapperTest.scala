@@ -173,20 +173,21 @@ abstract class PySparkWrapperTest(entryPoint: PipelineStage,
   protected def tryTransformString(entryPointName: String): String = {
     val param: String =
       entryPointName match {
-        case "WriteBlob" => "blobPath=\"file:///tmp/" + java.util.UUID.randomUUID + ".tsv\""
-        case "EnsembleByKey"       => "keys=[\"col1\"], cols=[\"col3\"]"
+        case "_CNTKModel" | "MultiTokenizer" | "NltTokenizeTransform" | "TextTransform"
+           | "TextNormalizerTransform" | "WordTokenizeTransform" => "inputCol=\"col5\""
         case "DataConversion"      => "col=\"col1\", convertTo=\"double\""
-        case "FastVectorAssembler" => "inputCols=\"col1\""
-        case "MultiNGram"          => "inputColumns=np.array([ \"col5\", \"col6\" ])"
-        case "SelectColumns"       => "cols=[\"col1\"]"
         case "DropColumns"         => "cols=[\"col1\"]"
-        case "Repartition"         => "n=2"
+        case "EnsembleByKey"       => "keys=[\"col1\"], cols=[\"col3\"]"
+        case "FastVectorAssembler" => "inputCols=\"col1\""
         case "IndexToValue"        => "inputCol=\"catOutput\""
+        case "MultiNGram"          => "inputColumns=np.array([ \"col5\", \"col6\" ])"
+        case "RenameColumn"        => "inputCol=\"col5\", outputCol=\"catOutput1\""
+        case "Repartition"         => "n=2"
+        case "SelectColumns"       => "cols=[\"col1\"]"
         case "TextPreprocessor"    => "inputCol=\"col5\", outputCol=\"catOutput1\", normFunc=\"identity\""
         case "ValueIndexerModel"   => "inputCol=\"col5\", outputCol=\"catOutput\", " +
           "dataType=\"string\", levels=[\"dog\", \"cat\", \"bird\"]"
-        case "_CNTKModel" | "MultiTokenizer" | "NltTokenizeTransform" | "TextTransform"
-           | "TextNormalizerTransform" | "WordTokenizeTransform" => "inputCol=\"col5\""
+        case "WriteBlob"           => "blobPath=\"file:///tmp/" + java.util.UUID.randomUUID + ".tsv\""
         case _ => ""
       }
     tryTransformTemplate(entryPointName, param)
