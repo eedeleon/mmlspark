@@ -37,7 +37,9 @@ abstract class PySparkWrapperTest(entryPoint: PipelineStage,
         |${importClass(entryPointName)}
         |from pyspark.ml.feature import Tokenizer
         |from mmlspark import TrainClassifier
+        |from pyspark.sql.functions import udf
         |from mmlspark import ValueIndexer
+        |import dill
         |
         |sc = SparkContext()
         |
@@ -105,6 +107,7 @@ abstract class PySparkWrapperTest(entryPoint: PipelineStage,
       s"""|        my$entryPointName = $entryPointName(baseStage=$model, inputCols=["col1"], outputCols=["out"])
           |        model = my$entryPointName.fit(data)
           |        self.assertNotEqual(model, None)""".stripMargin
+
   private def evaluateSetupTemplate(entryPointName: String) =
     s"""|    def test_$entryPointName(self):
         |        data = {
@@ -185,6 +188,7 @@ abstract class PySparkWrapperTest(entryPoint: PipelineStage,
         case "Repartition"         => "n=2"
         case "SelectColumns"       => "cols=[\"col1\"]"
         case "TextPreprocessor"    => "inputCol=\"col5\", outputCol=\"catOutput1\", normFunc=\"identity\""
+        case "UDFTransformer"      => "inputCol=\"col5\", outputCol=\"catOutput1\", udf=udf(lambda x: \"test\")"
         case "ValueIndexerModel"   => "inputCol=\"col5\", outputCol=\"catOutput\", " +
           "dataType=\"string\", levels=[\"dog\", \"cat\", \"bird\"]"
         case "WriteBlob"           => "blobPath=\"file:///tmp/" + java.util.UUID.randomUUID + ".tsv\""
